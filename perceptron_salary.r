@@ -8,12 +8,15 @@ perceptron <- function(x, classes, n_epocas) {
 	pesos <- rep(0, dim(x)[2] + 1)
 	erros <- rep(0, n_epocas)
 
-	#inicializa vetor com valores das classes, todas iguais a 1
+	#inicializa vetor com labels das classes, todas iguais a 1
 	y <- rep(1, dim(x)[1])
+
+	#inicializa vetor das previsões para as labels
+	y_pred <- rep(0, dim(x)[1])
 
 	#se classe for homem então valor = -1
 	#se classe for mulher então valor = 1
-	y[classes == 0] <- -1
+	y[classes[] == 0] <- -1
 
 	for (i in 1:n_epocas) {
 
@@ -22,23 +25,24 @@ perceptron <- function(x, classes, n_epocas) {
 			#usa função de ativação Heaviside para fazer previsão da label
 			z <- sum(pesos[2:length(pesos)] * as.numeric(x[j, ])) + pesos[1]
 			if(z < 0) {
-				prev_y <- -1
+				prev_y[j] <- -1
 			} else {
-				prev_y <- 1
+				prev_y[j] <- 1
 			}
 
 			#atualiza os pesos
-			dif_pesos <- (y[j] - prev_y) * c(1, as.numeric(x[j, ]))
+			dif_pesos <- (y[j] - prev_y[j]) * c(1, as.numeric(x[j, ]))
 			pesos <- pesos + dif_pesos
 
 			#atualiza os erros
-			if ((y[j] - prev_y) != 0.0) {
+			if ((y[j] - prev_y[j]) != 0.0) {
 				erros[i] <- erros[i] + 1
 			}
 		}
+
 	}
 
-	resultado <- list(y, erros, pesos)
+	resultado <- list(erros, pesos)
 	return(resultado)
 }
 
@@ -110,8 +114,6 @@ kfoldClassificador <- function(dados, classe, k, n_epocas){
 #define salary como dataset a ser analisado
 salary <- read.table("salary.csv", header=TRUE, sep=",")
 
-print(salary)
-
 #define matriz de atributos, pega as observações de todas as variáveis menos da classe
 x <- salary[, 1:5]
 
@@ -123,4 +125,4 @@ classe <- 6
 
 resultado <- kfoldClassificador(salary, classe, 5, 50)
 
-print(resultado[1])
+print(resultado[[3]])
