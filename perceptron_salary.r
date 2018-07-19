@@ -1,7 +1,5 @@
 #!/usr/bin/env Rscript
 
-library(gsubfn)
-
 #função recebe como entrada matriz de atributos, vetor de labels e número de épocas
 #os pesos são atualizados a cada iteração
 perceptron <- function(x, classes, n_epocas) {
@@ -54,8 +52,6 @@ kfoldTams <- function(n, k){
 	for(i in 1:k){
 		primeiro <- 1 + (((i - 1)*n) %/% k)
 		ultimo <- (i*n) %/% k
-		print(primeiro)
-		print(ultimo)
 		tams <- append(tams, ultimo - primeiro + 1)
 	}
 	return(tams)
@@ -112,15 +108,19 @@ kfoldClassificador <- function(dados, classe, k, n_epocas){
 
 
 #define salary como dataset a ser analisado
-data(salary)
+salary <- read.table("salary.csv", header=TRUE, sep=",")
+
+print(salary)
 
 #define matriz de atributos, pega as observações de todas as variáveis menos da classe
-x <- salary[, 2:6]
+x <- salary[, 1:5]
 
 #define vetor de classes
-classes <- salary[, 1]
+classes <- salary[, 6]
 
 #define coluna referente à classe
-classe <- 1
+classe <- 6
 
 resultado <- kfoldClassificador(salary, classe, 5, 50)
+
+print(resultado[1])
