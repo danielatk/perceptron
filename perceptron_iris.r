@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
-#função recebe como entrada matriz de atributos, vetor de labels, taxa de aprendizado e número de épocas
+library(gsubfn)
+
+#função recebe como entrada matriz de atributos, vetor de labels e número de épocas
 #os pesos são atualizados a cada iteração
 perceptron <- function(x, classes, n_epocas) {
 
@@ -31,9 +33,8 @@ perceptron <- function(x, classes, n_epocas) {
 		}
 	}
 
-	#pesos para decidir a classificação
-	print(erros)
-	return(pesos)
+	resultado <- list(y, erros, pesos)
+	return(resultado)
 }
 
 
@@ -80,7 +81,8 @@ kfoldTeste <- function(n, k){
 }
 
 classificadorPerceptron <- function(treino, teste, classe, n_epocas){
-	pesos <- perceptron(treino[, -classe], treino[, classe], n_epocas)
+	resultado <- perceptron(treino[, -classe], treino[, classe], n_epocas)
+	return(resultado)
 }
 
 
@@ -96,8 +98,6 @@ kfoldClassificador <- function(dados, classe, k, n_epocas){
 		indices_teste <- todos_indices_teste[[i]]
 		treino <- dados[-indices_teste, ]
 		teste <- dados[indices_teste, ]
-		print(treino)
-		print(teste)
 		resultado[[i]] <- classificadorPerceptron(treino, teste, classe, n_epocas)
 	}
 	return(resultado)
@@ -107,13 +107,13 @@ kfoldClassificador <- function(dados, classe, k, n_epocas){
 #define iris como dataset a ser analisado
 data(iris)
 
-#define matriz de atributos, pega as observações de todas as variáveis menos "espécie"
+#define matriz de atributos, pega as observações de todas as variáveis menos da classe
 x <- iris[, 1:4]
 
-#define vetor de classes, pega o valor de cada observação da variável "espécie"
+#define vetor de classes
 classes <- iris[, 5]
 
-#define coluna referente à variável "éspecie"
-classe = 5
+#define coluna referente à classe
+classe <- 5
 
 kfoldClassificador(iris, classe, 5, 50)
