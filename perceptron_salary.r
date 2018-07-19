@@ -40,7 +40,8 @@ perceptron <- function(x, classes, n_epocas) {
 		}
 	}
 
-	list(y, erros, pesos)
+	resultado <- list(y, erros, pesos)
+	return(resultado)
 }
 
 
@@ -87,8 +88,8 @@ kfoldTeste <- function(n, k){
 }
 
 classificadorPerceptron <- function(treino, teste, classe, n_epocas){
-	list[y, erros, pesos] <- perceptron(treino[, -classe], treino[, classe], n_epocas)
-	list(y, erros, pesos)
+	resultado <- perceptron(treino[, -classe], treino[, classe], n_epocas)
+	return(resultado)
 }
 
 
@@ -113,13 +114,13 @@ kfoldClassificador <- function(dados, classe, k, n_epocas){
 #define salary como dataset a ser analisado
 data(salary)
 
-#define matriz de atributos, pega as observações de todas as variáveis menos "sexo"
+#define matriz de atributos, pega as observações de todas as variáveis menos da classe
 x <- salary[, 2:6]
 
-#define vetor de classes, pega o valor de cada observação da variável "sexo"
+#define vetor de classes
 classes <- salary[, 1]
 
-#define coluna referente à variável "sexo"
-classe = 1
+#define coluna referente à classe
+classe <- 1
 
-kfoldClassificador(salary, classe, 5, 50)
+resultado <- kfoldClassificador(salary, classe, 5, 50)
