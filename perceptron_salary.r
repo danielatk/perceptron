@@ -12,7 +12,7 @@ perceptron <- function(x, classes, n_epocas) {
 	y <- rep(1, dim(x)[1])
 
 	#inicializa vetor das previsões para as labels
-	y_pred <- rep(0, dim(x)[1])
+	prev_y <- rep(0, dim(x)[1])
 
 	#se classe for homem então valor = -1
 	#se classe for mulher então valor = 1
@@ -42,7 +42,7 @@ perceptron <- function(x, classes, n_epocas) {
 
 	}
 
-	resultado <- list(erros, pesos)
+	resultado <- list(y, prev_y, erros, pesos)
 	return(resultado)
 }
 
@@ -89,6 +89,7 @@ kfoldTeste <- function(n, k){
 
 classificadorPerceptron <- function(treino, teste, classe, n_epocas){
 	resultado <- perceptron(treino[, -classe], treino[, classe], n_epocas)
+	print(resultado)
 	return(resultado)
 }
 
@@ -124,5 +125,3 @@ classes <- salary[, 6]
 classe <- 6
 
 resultado <- kfoldClassificador(salary, classe, 5, 50)
-
-print(resultado[[3]])

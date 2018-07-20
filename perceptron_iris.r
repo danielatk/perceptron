@@ -31,7 +31,7 @@ perceptron <- function(x, classes, n_epocas) {
 		}
 	}
 
-	resultado <- list(y, erros, pesos)
+	resultado <- list(y, prev_y, erros, pesos)
 	return(resultado)
 }
 
